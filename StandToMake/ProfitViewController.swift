@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfitViewController: UIViewController {
+class ProfitViewController: UIViewController, UITextFieldDelegate {
     
     // yearly values
     var profit = 1260000
@@ -49,14 +49,58 @@ class ProfitViewController: UIViewController {
     }
     
     // Setup UserInterface Elements
-    var summaryLabel: UILabel = {
+    var summaryLabel1: UILabel = {
         let label = UILabel()
-        label.frame = CGRectMake(20, 40, 280, 120)
+        label.frame = CGRectMake(20, 108, 280, 40)
         label.font = UIFont(name: "Avenir", size:20)
         label.textAlignment = .Left
         label.lineBreakMode = .ByWordWrapping
         label.numberOfLines = 5
-        label.text = "My Product will sell for $0.99. I will make 100 sales each month, and Apple's App Store will help me sell it."
+        label.text = "My Product will sell for"
+        return label
+        }()
+    
+    var summaryLabel2: UILabel = {
+        let label = UILabel()
+        label.frame = CGRectMake(20, 140, 280, 40)
+        label.font = UIFont(name: "Avenir", size:20)
+        label.textAlignment = .Left
+        label.lineBreakMode = .ByWordWrapping
+        label.numberOfLines = 5
+        label.text = "and sell"
+        return label
+        }()
+    
+    var summaryLabel3: UILabel = {
+        let label = UILabel()
+        label.frame = CGRectMake(173, 140, 180, 40)
+        label.font = UIFont(name: "Avenir", size:20)
+        label.textAlignment = .Left
+        label.lineBreakMode = .ByWordWrapping
+        label.numberOfLines = 5
+        label.text = "copies every"
+        return label
+        }()
+    
+    var summaryLabel4: UILabel = {
+        let label = UILabel()
+        label.frame = CGRectMake(100, 172, 280, 40)
+        label.font = UIFont(name: "Avenir", size:20)
+        label.textAlignment = .Left
+        label.lineBreakMode = .ByWordWrapping
+        label.numberOfLines = 5
+        label.text = "and use"
+        return label
+        }()
+    
+    var summaryLabel5: UILabel = {
+        let label = UILabel()
+        label.frame = CGRectMake(20, 200, 280, 40)
+        label.font = UIFont(name: "Avenir", size:20)
+        label.textAlignment = .Left
+        label.lineBreakMode = .ByWordWrapping
+        label.numberOfLines = 5
+        label.text = "to sell your product."
         return label
         }()
     
@@ -86,10 +130,27 @@ class ProfitViewController: UIViewController {
         }()
     
     func labels() {
-        self.view.addSubview(summaryLabel)
-        self.view.addSubview(feeLabel)
-        self.view.addSubview(standToMakeLabel)
+        self.view.addSubview(summaryLabel1)
+        self.view.addSubview(summaryLabel2)
+        self.view.addSubview(summaryLabel3)
+        self.view.addSubview(summaryLabel4)
+        self.view.addSubview(summaryLabel5)
+//        self.view.addSubview(feeLabel)
+//        self.view.addSubview(standToMakeLabel)
     }
+
+    let priceField: UITextField = {
+        let field = UITextField()
+        field.frame = CGRectMake(230, 115, 70, 28)
+        field.font = UIFont(name: "Avenir", size: 16)
+        field.textAlignment = .Center
+        field.keyboardType = .NumberPad
+        field.layer.borderWidth = 1.0
+        field.layer.borderColor = UIColor.blackColor().CGColor
+        field.layer.cornerRadius = 5.0
+        return field
+    }()
+    var price: Int = 99
     
     var settingsButton: UIButton = {
         let button = UIButton()
@@ -100,7 +161,8 @@ class ProfitViewController: UIViewController {
     
     func buttons() {
         settingsButton.addTarget(self, action: "openSettings", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(settingsButton)
+//        self.view.addSubview(settingsButton)
+        self.view.addSubview(priceField)
     }
     
     func openSettings() {
@@ -135,7 +197,11 @@ class ProfitViewController: UIViewController {
                 periodCanonical = "month"
             }
             
-            self.summaryLabel.text = "My Product will sell for $\(price). I will make \(sales) sales each \(periodCanonical), and Apple's App Store will help me sell it."
+            self.summaryLabel1.text = "My Product will sell for"
+            self.summaryLabel2.text = "and sell"
+            self.summaryLabel3.text = "copies every"
+            self.summaryLabel4.text = "and use"
+            self.summaryLabel5.text = "to sell your product."
             
             // calculate yearly profits
             var yearlyProfit = Float(price) * Float(sales) * Float(period) * 0.7
@@ -144,23 +210,23 @@ class ProfitViewController: UIViewController {
             // format and set all of the text like a boss
             var dailyProfits = formatter.stringFromNumber(yearlyProfit / 365)
             var dailyFees = formatter.stringFromNumber(yearlyFees / 365)
-            self.dailyProfitLabel.text = "\(dailyProfits) /day"
-            self.dailyFeesLabel.text = "Fees \(dailyFees)"
+            self.dailyProfitLabel.text = "\(dailyProfits!) /day"
+            self.dailyFeesLabel.text = "Fees \(dailyFees!)"
             
             var weeklyProfits = formatter.stringFromNumber(yearlyProfit / 52)
             var weeklyFees = formatter.stringFromNumber(yearlyFees / 52)
-            self.weeklyProfitLabel.text = "\(weeklyProfits) /week"
-            self.weeklyFeesLabel.text = "Fees \(weeklyFees)"
+            self.weeklyProfitLabel.text = "\(weeklyProfits!) /week"
+            self.weeklyFeesLabel.text = "Fees \(weeklyFees!)"
             
             var monthlyProfits = formatter.stringFromNumber(yearlyProfit / 12)
             var monthlyFees = formatter.stringFromNumber(yearlyFees / 12)
-            self.monthlyProfitLabel.text = "\(monthlyProfits) /month"
-            self.monthlyFeesLabel.text = "Fees \(monthlyFees)"
+            self.monthlyProfitLabel.text = "\(monthlyProfits!) /month"
+            self.monthlyFeesLabel.text = "Fees \(monthlyFees!)"
             
             var yearlyProfitsFormatted = formatter.stringFromNumber(yearlyProfit)
             var yearlyFeesFormatted = formatter.stringFromNumber(yearlyFees)
-            self.yearlyProfitLabel.text = "\(yearlyProfitsFormatted) /year"
-            self.yearlyFeesLabel.text = "Fees \(yearlyFeesFormatted)"
+            self.yearlyProfitLabel.text = "\(yearlyProfitsFormatted!) /year"
+            self.yearlyFeesLabel.text = "Fees \(yearlyFeesFormatted!)"
         }
     }
     
@@ -262,6 +328,46 @@ class ProfitViewController: UIViewController {
         self.view.addSubview(yearlyProfitLabel)
         self.view.addSubview(yearlyFeesLabel)
     }
+    
+    
+    
+    
+    // uitextfield delegate for 
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        
+        textField.resignFirstResponder()
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+//        if(range.length + range.location >  countElements(textField.text)){
+//            return false;
+//        }
+        
+        var newLength = countElements(textField.text) + countElements(string) - range.length;
+        
+        println("New Length: \(newLength)")
+        
+        if(newLength > 3){
+            return false
+        } else {
+            return true
+        }
+    }
+//    
+//    
+//    - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//    // Prevent crashing undo bug – see note below.
+//    if(range.length + range.location > textField.text.length)
+//    {
+//    return NO;
+//    }
+//    
+//    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+//    return (newLength > 25) ? NO : YES;
+//    }
+    
     
 }
 

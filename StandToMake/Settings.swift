@@ -116,7 +116,6 @@ class Settings: UIViewController {
     *  Load the User Interface elements
     *  Sales Related Stuff
     */
-    
     // Change Sales Actions
     func updateSliderSales(){
         // get the sliders number.

@@ -49,60 +49,19 @@ class ProfitViewController: UIViewController, UITextFieldDelegate {
     }
     
     // Setup UserInterface Elements
-    var summaryLabel1: UILabel = {
-        let label = UILabel()
-        label.frame = CGRectMake(20, 108, 280, 40)
+    var attributedSummary: UITextView = {
+        let label = UITextView()
+        label.frame = CGRectMake(20, 20, (320 - 40), 300)
         label.font = UIFont(name: "Avenir", size:20)
         label.textAlignment = .Left
-        label.lineBreakMode = .ByWordWrapping
-        label.numberOfLines = 5
-        label.text = "My Product will sell for"
+//        label.lineBreakMode = .ByWordWrapping
+//        label.numberOfLines = 5
+        label.allowsEditingTextAttributes = false;
+        label.selectable = false;
+        label.text = "My Product will sell for $0.99, I will sell 500 copies, every month, and Gumroad will help me sell it."
         return label
-        }()
+    }()
     
-    var summaryLabel2: UILabel = {
-        let label = UILabel()
-        label.frame = CGRectMake(20, 140, 280, 40)
-        label.font = UIFont(name: "Avenir", size:20)
-        label.textAlignment = .Left
-        label.lineBreakMode = .ByWordWrapping
-        label.numberOfLines = 5
-        label.text = "and sell"
-        return label
-        }()
-    
-    var summaryLabel3: UILabel = {
-        let label = UILabel()
-        label.frame = CGRectMake(173, 140, 180, 40)
-        label.font = UIFont(name: "Avenir", size:20)
-        label.textAlignment = .Left
-        label.lineBreakMode = .ByWordWrapping
-        label.numberOfLines = 5
-        label.text = "copies every"
-        return label
-        }()
-    
-    var summaryLabel4: UILabel = {
-        let label = UILabel()
-        label.frame = CGRectMake(100, 172, 280, 40)
-        label.font = UIFont(name: "Avenir", size:20)
-        label.textAlignment = .Left
-        label.lineBreakMode = .ByWordWrapping
-        label.numberOfLines = 5
-        label.text = "and use"
-        return label
-        }()
-    
-    var summaryLabel5: UILabel = {
-        let label = UILabel()
-        label.frame = CGRectMake(20, 200, 280, 40)
-        label.font = UIFont(name: "Avenir", size:20)
-        label.textAlignment = .Left
-        label.lineBreakMode = .ByWordWrapping
-        label.numberOfLines = 5
-        label.text = "to sell your product."
-        return label
-        }()
     
     var feeLabel: UIBorderedLabel = {
         let label = UIBorderedLabel()
@@ -130,39 +89,26 @@ class ProfitViewController: UIViewController, UITextFieldDelegate {
         }()
     
     func labels() {
-        self.view.addSubview(summaryLabel1)
-        self.view.addSubview(summaryLabel2)
-        self.view.addSubview(summaryLabel3)
-        self.view.addSubview(summaryLabel4)
-        self.view.addSubview(summaryLabel5)
-//        self.view.addSubview(feeLabel)
-//        self.view.addSubview(standToMakeLabel)
+        
+        var optionsRecognizer = UITapGestureRecognizer()
+        optionsRecognizer.addTarget(self, action: "openSettings")
+        attributedSummary.addGestureRecognizer(optionsRecognizer)
+        
+        self.view.addSubview(attributedSummary)
+        self.view.addSubview(feeLabel)
+        self.view.addSubview(standToMakeLabel)
     }
 
-    let priceField: UITextField = {
-        let field = UITextField()
-        field.frame = CGRectMake(230, 115, 70, 28)
-        field.font = UIFont(name: "Avenir", size: 16)
-        field.textAlignment = .Center
-        field.keyboardType = .NumberPad
-        field.layer.borderWidth = 1.0
-        field.layer.borderColor = UIColor.blackColor().CGColor
-        field.layer.cornerRadius = 5.0
-        return field
+    var truePrice: Int = {
+        let price: Int = 0;
+        return price;
     }()
-    var price: Int = 99
     
-    var settingsButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = UIColor.clearColor()
-        button.frame = CGRectMake(20, 40, 280, 120)
-        return button
-        }()
     
     func buttons() {
-        settingsButton.addTarget(self, action: "openSettings", forControlEvents: UIControlEvents.TouchUpInside)
-//        self.view.addSubview(settingsButton)
-        self.view.addSubview(priceField)
+//        settingsButton.addTarget(self, action: "openSettings", forControlEvents: UIControlEvents.TouchUpInside)
+//        priceField.delegate = self;
+//        self.view.addSubview(priceField)
     }
     
     func openSettings() {
@@ -197,11 +143,9 @@ class ProfitViewController: UIViewController, UITextFieldDelegate {
                 periodCanonical = "month"
             }
             
-            self.summaryLabel1.text = "My Product will sell for"
-            self.summaryLabel2.text = "and sell"
-            self.summaryLabel3.text = "copies every"
-            self.summaryLabel4.text = "and use"
-            self.summaryLabel5.text = "to sell your product."
+            var merchant = "Gumroad"
+            
+            self.attributedSummary.text = "My Product will sell for \(price), I will make \(sales) sales every \(periodCanonical), and \(merchant) will help me sell it."
             
             // calculate yearly profits
             var yearlyProfit = Float(price) * Float(sales) * Float(period) * 0.7
@@ -227,6 +171,7 @@ class ProfitViewController: UIViewController, UITextFieldDelegate {
             var yearlyFeesFormatted = formatter.stringFromNumber(yearlyFees)
             self.yearlyProfitLabel.text = "\(yearlyProfitsFormatted!) /year"
             self.yearlyFeesLabel.text = "Fees \(yearlyFeesFormatted!)"
+            
         }
     }
     
@@ -329,33 +274,27 @@ class ProfitViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(yearlyFeesLabel)
     }
     
-    
-    
-    
-    // uitextfield delegate for 
-    
+    // uitextfield delegate for
     func textFieldDidEndEditing(textField: UITextField) {
-        
         textField.resignFirstResponder()
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         
-//        if(range.length + range.location >  countElements(textField.text)){
-//            return false;
+//        if textField == priceField {
+//
+//            var newLength = countElements(textField.text) + countElements(string) - range.length;
+//            
+//            // limit the characters to 6, up to 999,999
+//            if newLength > 6 {
+//                return false
+//            } else {
+//                return true
+//            }
 //        }
-        
-        var newLength = countElements(textField.text) + countElements(string) - range.length;
-        
-        println("New Length: \(newLength)")
-        
-        if(newLength > 3){
-            return false
-        } else {
-            return true
-        }
+//        
+        return true
     }
-//    
 //    
 //    - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 //    // Prevent crashing undo bug – see note below.
@@ -368,7 +307,4 @@ class ProfitViewController: UIViewController, UITextFieldDelegate {
 //    return (newLength > 25) ? NO : YES;
 //    }
     
-    
 }
-
-

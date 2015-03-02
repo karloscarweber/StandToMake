@@ -84,7 +84,6 @@ class Settings: UIViewController {
         slider.frame = CGRectMake(20, 105, 280, 30)
         return slider
         }()
-    
     let priceStepper: UIStepper = {
         let stepper = UIStepper()
         stepper.frame = CGRectMake(200, 140, 100, 30)
@@ -189,7 +188,6 @@ class Settings: UIViewController {
         self.view.addSubview(salesStepper)
         self.view.addSubview(salesValueLabel)
     }
-    
     
     /**
     *  Load the User Interface elements

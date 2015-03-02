@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = navController
         
         window!.makeKeyAndVisible()
+        
         return true
     }
     
